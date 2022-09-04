@@ -1,0 +1,43 @@
+{% extends 'hod_dashboard.html' %}
+
+{% block content %}
+<div class="container">
+    <h4>HOD - Single Degree</h4>
+    <div class="section">
+        
+        <form action="{% url 'hod-single_degree' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="input-field col s6">
+                    <select name="branch">
+                        <option value='A1'>B.E. Chemical Engineering</option>
+                        <option value='A3'>B.E. Electrical and Electronics Engineering</option>
+                        <option value='A4'>B.E. Mechanical Engineering</option>
+                        <option value='A7'>B.E. Computer Science</option>
+                        <option value='A8'>B.E. Electronics and Instrumentation Engineering</option>
+                        <option value='AA'>B.E. Electronics and Communication Engineering</option>
+                    </select>
+                    <label>Year</label>
+                </div>
+                <div class="input-field col s6">
+                    <select name="year">
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                    </select>
+                    <label>Year</label>
+                </div>
+                <div class="col s6">
+                    <input type="checkbox" id="checkbox--only-singlites" name="checkbox--only-singlites" class="filled-in" />
+                    <label for="checkbox--only-singlites">Show only Single Degree students</label>
+                </div>
+                <div class="col s6 right-align">
+                    <button class="btn btn-block bg-green waves-effect" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

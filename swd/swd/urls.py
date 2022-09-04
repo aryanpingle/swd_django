@@ -47,6 +47,7 @@ urlpatterns = [
 
     url(r'^', include('main.urls')),
     url(r'^', include('gate_security.urls')),
+    url(r'^', include('head_of_department.urls')),
     url(r'^', include('mcn.urls')),
 
 

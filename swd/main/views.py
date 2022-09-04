@@ -24,7 +24,7 @@ from django.db import IntegrityError
 from django.db.models import Q
 from .models import BRANCH, HOSTELS
 
-from .templatetags.main_extras import is_hostelsuperintendent, is_warden, is_security, get_base_template
+from .templatetags.main_extras import is_hostelsuperintendent, is_warden, is_security, get_base_template, is_hod
 
 import swd.config as config
 
@@ -124,6 +124,10 @@ def index(request):
             return redirect('/hostelsuperintendent')
         if Security.objects.filter(user=request.user):
             return redirect('dash_security_leaves')
+        if HeadOfDepartment.objects.filter(user=request.user):
+            return redirect('/head_of_department')
+        else:
+            print(request.user)
         return redirect('dashboard')
     else:
         notice_list = Notice.objects.all().order_by('-id')
@@ -381,6 +385,8 @@ def loginform(request):
             return redirect('/hostelsuperintendent')
         if Security.objects.filter(user=request.user):
             return redirect('dash_security_leaves')
+        if HeadOfDepartment.objects.filter(user=request.user):
+            return redirect('/head_of_department')
         return redirect('dashboard')
 
     if request.POST:
@@ -397,6 +403,8 @@ def loginform(request):
                 return redirect('/hostelsuperintendent')
             if Security.objects.filter(user=request.user):
                 return redirect('dash_security_leaves')
+            if HeadOfDepartment.objects.filter(user=request.user):
+                return redirect('/head_of_department')
             return redirect('dashboard')
         else:
             messages.add_message(request, messages.INFO,  "Incorrect username or password", extra_tags='red')

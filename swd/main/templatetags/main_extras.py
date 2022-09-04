@@ -1,6 +1,6 @@
 from django import template
 
-from main.models import Warden, HostelSuperintendent, Security
+from main.models import Warden, HostelSuperintendent, Security, HeadOfDepartment
 
 register = template.Library()
 
@@ -24,6 +24,9 @@ def is_hostelsuperintendent(user):
 
 def is_security(user):
     return False if not Security.objects.filter(user=user) else True
+
+def is_hod(user):
+    return False if not HeadOfDepartment.objects.filter(user=user) else True
 
 
 @register.simple_tag

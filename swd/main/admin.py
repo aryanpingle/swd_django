@@ -30,7 +30,9 @@ models = [
     AntiRagging,
     DueCategory,
     DuesPublished,
-    Security
+    VacationDatesFill,
+    Security,
+    HeadOfDepartment
 ]
 
 @admin.register(HostelPS)

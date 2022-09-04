@@ -698,3 +698,10 @@ class AddressChangeRequest(models.Model):
 
 class Security(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+class HeadOfDepartment(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Head of Department"
+        verbose_name_plural = "Heads of Department"

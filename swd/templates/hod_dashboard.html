@@ -1,0 +1,144 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=1024">
+    <title>SWD BITS Goa | HOD</title>
+
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection" />
+
+</head>
+
+<body>
+    <nav class="nav-extended">
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo"><img id="swd" src="{% static 'img/swd.png' %}"></a>
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li class=""><a href="/profile" class="valign-wrapper"><img class="circle profileImg" src="{% static 'img/profile-swd.jpg' %}">&nbsp;{{ hod_user.user.name|title }}</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+            <ul class="side-nav" id="mobile-demo">
+                <li><a href="/profile" class="valign-wrapper"><img class="circle profileImg" src="{% static 'img/profile-swd.jpg' %}">&nbsp;{{ hod_user.user.name|title }}</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+            <style>
+                .profileImg {
+                    max-width: 35px;
+                    height: auto
+                }
+            </style>
+        </div>
+
+        
+        <div class="nav-content desktop" style="margin-bottom:10px;">
+            <ul class="tabs tabs-transparent">
+                {% load main_extras %}
+                <li class="tab"><a href="/head_of_department/" class="{% active_page request 'hod-single_degree' %}" target="_self">B.E. Degree</a></li>
+                <li class="tab"><a href="/head_of_department/dual-degree" class="{% active_page request 'hod-dual_degree' %}" target="_self">M.Sc. Degree</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="section no-pad-bot" id="index-banner">
+    </div>
+
+    {% block content %}
+    {% endblock %}
+
+    <style>
+        table {
+            width: 90%;
+            margin: 0 auto;
+        }
+    </style>
+
+    <table class="centered bordered striped">
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Hostel / Room</th>
+                <th>CGPA</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <tr>
+                    <td><img src="{{ student.profile_picture }}" alt=""></td>
+                    <td>{{ student.bitsId }}</td>
+                    <td>{{ student.name }}</td>
+                    <td>IDK</td>
+                    <td>{{ student.cgpa }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!--  Scripts-->
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/materialize.js' %}"></script>
+    <script src="{% static 'js/init.js' %}"></script>
+    <script>
+        var d = new Date();
+        $('#year').attr('value', d.getFullYear());
+        $(document).ready(function(){
+            var i;
+            for(i=2018; i<d.getFullYear();i++){
+                $('.year-choice').append(
+                    '<option value="' + i + '">'+ i + '</option>'
+                );
+            }
+            $('.year-choice').append(
+                    '<option value="' + i + '" selected>'+ i + '</option>'
+                );
+        });
+    </script>
+    <style>
+        .clickable {
+            cursor: pointer;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            $('select').material_select();
+        });
+
+        // var yesterday = new Date((new Date()).valueOf()-1000*60*60*24);
+
+        $('.datepicker').pickadate({
+           
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15, // Creates a dropdown of 15 years to control year,
+            today: 'Today',
+            clear: 'Clear',
+            close: 'Ok',
+            closeOnSelect: false, // Close upon selecting a date,
+            container: undefined, // ex. 'body' will append picker to body
+     
+        });
+
+        $('.timepicker').pickatime({
+            default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+            fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+            twelvehour: false, // Use AM/PM or 24-hour format
+            donetext: 'OK', // text for done-button
+            cleartext: 'Clear', // text for clear-button
+            canceltext: 'Cancel', // Text for cancel-button,
+            container: undefined, // ex. 'body' will append picker to body
+            autoclose: false, // automatic close timepicker
+            ampmclickable: true, // make AM PM clickable
+            aftershow: function(){} //Function for after opening timepicker
+        });
+
+    </script>
+
+</body>
+
+</html>
