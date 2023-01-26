@@ -5,7 +5,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=1024">
-    <title>SWD BITS Goa | HOD</title>
+    <title>SWD BITS Goa | B.E. Degree HOD </title>
 
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -55,25 +55,42 @@
             width: 90%;
             margin: 0 auto;
         }
+
+        #result-count {
+            text-align: center;
+        }
     </style>
 
-    <table class="centered bordered striped">
+    <div id="result-count">
+        Results: {{ student_data | length }}
+    </div>
+
+    <style>
+        /* Highlight CGPA */
+        #results-table td:last-of-type {
+            background-color: hsl(50, 100%, 85%);
+            color: #000;
+            font-weight: 600;
+        }
+    </style>
+
+    <table class="centered bordered striped" id="results-table">
         <thead>
             <tr>
-                <th>Photo</th>
+                <th>Rank</th>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Hostel / Room</th>
+                <th>Hostel/Room</th>
                 <th>CGPA</th>
             </tr>
         </thead>
         <tbody>
-            {% for student in students %}
+            {% for student,hostelps in student_data %}
                 <tr>
-                    <td><img src="{{ student.profile_picture }}" alt=""></td>
+                    <td># {{ forloop.counter }}</td>
                     <td>{{ student.bitsId }}</td>
                     <td>{{ student.name }}</td>
-                    <td>IDK</td>
+                    <td>{{ hostelps.hostel }} / {{ hostelps.room }}</td>
                     <td>{{ student.cgpa }}</td>
                 </tr>
             {% endfor %}

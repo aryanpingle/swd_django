@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from main.models import Student
+from main.models import Student, HostelPS
 from django.db.models import Q
 
 def index(request):
     """
-    [SINGLE DEGREE ONLY]
+    [B.E. DEGREE ONLY]
     Handles GET and POST requests. Every time the HOD clicks on the search button a POST request will be initiated
     """
 
@@ -22,17 +22,23 @@ def index(request):
 
     branch = data["branch"]
     year = data["year"]
-    flag__only_single_degree = "checkbox--only-single-degree" in data
+    flag__only_single_degree = "checkbox--only-singlites" in data
 
     query = None
     if flag__only_single_degree:
         query = Q(bitsId__startswith = f"{year}{branch}")
     else:
-        query = Q(bitsId__contains = branch, bitsId__startswith = str(year))
+        # Suppose year = 2020 & branch = A8
+        # Then it should match 2020A8 and 2021B*A8
+        query = Q(bitsId__startswith = f"{year}{branch}") | Q(bitsId__startswith = f"{int(year) - 1}B", bitsId__contains = branch)
 
+    # Get students and their corresponding hostelPS objects
     filtered_students = Student.objects.filter(query).order_by("-cgpa")
+    corresponding_hostelps = HostelPS.objects.filter(student__in = filtered_students).order_by("-student__cgpa")
+    # student_data -> ((<student obj>, <hostel_obj>), ...)
+    student_data = tuple(zip(filtered_students, corresponding_hostelps))
 
-    context.update({ "students": filtered_students })
+    context.update({ "student_data": student_data })
 
     return render(request, "hod-single_degree.html", context)
 
