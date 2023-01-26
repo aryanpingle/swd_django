@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from main.models import Student, HostelPS
+from main.models import Student, HostelPS, HeadOfDepartment
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def index(request):
     """
     [B.E. DEGREE ONLY]
@@ -10,8 +12,12 @@ def index(request):
     """
 
     context = {}
-    hod_user = request.user
-    context.update({ "hod_user": hod_user })
+    user = request.user
+    is_hod = False if not HeadOfDepartment.objects.filter(user=user) else True
+    if (not user.is_superuser) and (not is_hod):
+        return redirect("/")
+
+    context.update({ "hod_user": user })
 
     if not request.POST:
         return render(request, "hod-single_degree.html", context)
@@ -42,14 +48,19 @@ def index(request):
 
     return render(request, "hod-single_degree.html", context)
 
+@login_required
 def dual_degree(request):
     """
     Handles GET and POST requests. Every time the HOD clicks on the search button a POST request will be initiated
     """
 
     context = {}
-    hod_user = request.user
-    context.update({ hod_user: hod_user })
+    user = request.user
+    is_hod = False if not HeadOfDepartment.objects.filter(user=user) else True
+    if (not user.is_superuser) and (not is_hod):
+        return redirect("/")
+
+    context.update({ "hod_user": user })
 
     if request.GET:
         return render(request, "hod-dual_degree.html", context)
